@@ -21,14 +21,16 @@ function BluepayClient(options) {
       payment_account: REQUIRED,
 
       f_rebilling: OPTIONAL,
+      reb_is_credit: OPTIONAL,
+      reb_first_date: OPTIONAL,
+      reb_expr: OPTIONAL,
+      do_rebill: OPTIONAL,
+      reb_cycles: OPTIONAL,
+      // reb_amount: OPTIONAL,
       version: OPTIONAL,
       customer_ip: OPTIONAL,
       master_id: OPTIONAL,
       mode: OPTIONAL,
-      order_id: OPTIONAL,
-      custom_id: OPTIONAL,
-      custom_id2: OPTIONAL,
-      duplicate_override: OPTIONAL,
 
       // AVS
       name1: OPTIONAL,
@@ -38,9 +40,7 @@ function BluepayClient(options) {
       city: OPTIONAL,
       state: OPTIONAL,
       zip: OPTIONAL,
-      country: OPTIONAL, // ISO 3166
-      email: OPTIONAL,
-      phone: OPTIONAL
+      country: OPTIONAL // ISO 3166
 
     },
     mode: 'TEST',
@@ -93,12 +93,28 @@ BluepayClient.prototype._seal = function(form) {
 }
 
 
-function CardPayment(options) {
+function CardSinglePayment(options) {
   return new BluepayClient(extend({
     payment_type: 'CREDIT',
     _fields: {
       card_cvv2: REQUIRED,
       card_expire: REQUIRED
+    }
+  }, options));
+}
+
+function CardRecurringPayment(options) {
+  return new BluepayClient(extend({
+    payment_type: 'CREDIT',
+    _fields: {
+      card_cvv2: REQUIRED,
+      card_expire: REQUIRED,
+      do_rebill: REQUIRED,
+      reb_is_credit: REQUIRED,
+      reb_first_date : REQUIRED,
+      reb_expr : REQUIRED,
+      reb_cycles: OPTIONAL,
+      reb_amount: OPTIONAL
     }
   }, options));
 }
@@ -115,18 +131,22 @@ function CardRefund(options) {
 }
 
 
+
 function ACHPayment(options) {
   return new BluepayClient(extend({
     payment_type: 'ACH',
     _fields: {
-      doc_type: OPTIONAL
+      doc_type: OPTIONAL,
+      
     }
   }, options));
 }
 
+
 exports.ACHPayment = ACHPayment;
-exports.CardPayment = CardPayment;
+exports.CardSinglePayment = CardSinglePayment;
 exports.CardRefund = CardRefund;
+exports.CardRecurringPayment = CardRecurringPayment;
 
 
 
@@ -136,16 +156,12 @@ var BLUEPAY_MESSAGES = {
   'missing payment account': 'Invalid credit card number',
   'card expired': 'Credit card expiration date is not valid',
   'expiration date required for credit': 'Credit card expiration date is not valid',
-  'duplicate': 'The transaction has been rejected for being a duplicate attempt',
-  'invalid cvv2': 'Card verfication number (CVV2) or expiration date incorrect',
+  'duplicate': 'This transaction has already been completed',
+  'invalid cvv2': 'Card verfication number (CVV2) is incorrect',
   'card account not valid': 'Invalid credit card number',
   'approved sale': 'Payment successfully processed',
-  'cvv2 decline': 'Card verfication number (CVV2) or expiration date incorrect',
-  'avs decline': 'Billing address verfication failed',
-  'error selecting processor': 'Payment could not be processed (double check the amount?)',
-  'auth/tkt': 'Payment successfully processed',
-  'sec violation': 'Card verfication number (CVV2) or expiration date incorrect',
-  'no such issuer': 'Invalid credit card number'
+  'cvv2 decline': 'Card verfication number (CVV2) is incorrect',
+  'avs decline': 'Billing address verfication failed'
 }
 
 var util = {
@@ -154,7 +170,7 @@ var util = {
     if (!message) {
       return message;
     }
-    return BLUEPAY_MESSAGES[message.trim().toLowerCase()] || message;
+    return BLUEPAY_MESSAGES[message.toLowerCase()] || message;
   },
 
 
