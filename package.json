@@ -1,24 +1,47 @@
 {
-  "name": "bluepay",
-  "version": "0.1.8",
-  "description": "Simple BluePay client",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
+  "_from": "git+https://github.com/vybezi/node-bluepay.git",
+  "_id": "bluepay@0.1.8",
+  "_inBundle": false,
+  "_integrity": "sha1-btofjAzajpApzS7wct9lVYjfyqU=",
+  "_location": "/bluepay",
+  "_phantomChildren": {},
+  "_requested": {
     "type": "git",
-    "url": "https://github.com/ericz/node-bluepay.git"
+    "raw": "https://github.com/vybezi/node-bluepay",
+    "rawSpec": "https://github.com/vybezi/node-bluepay",
+    "saveSpec": "git+https://github.com/vybezi/node-bluepay.git",
+    "fetchSpec": "https://github.com/vybezi/node-bluepay.git",
+    "gitCommittish": "master"
   },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "git+https://github.com/vybezi/node-bluepay.git#3d6f7e55ac008e63bd39211ddeaa59d8514b43bc",
+  "_spec": "https://github.com/vybezi/node-bluepay",
+  "_where": "D:\\GitHub\\SaSS\\api",
   "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ericz/node-bluepay/issues"
   },
-  "homepage": "https://github.com/ericz/node-bluepay",
+  "bundleDependencies": false,
   "dependencies": {
     "extend": "^1.3.0",
     "qs": "^1.1.0",
     "request": "^2.40.0"
-  }
+  },
+  "deprecated": false,
+  "description": "Simple BluePay client",
+  "homepage": "https://github.com/ericz/node-bluepay",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "bluepay",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericz/node-bluepay.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.8"
 }

@@ -40,11 +40,11 @@ function BluepayClient(options) {
       city: OPTIONAL,
       state: OPTIONAL,
       zip: OPTIONAL,
-      country: OPTIONAL // ISO 3166
-
+      country: OPTIONAL, // ISO 3166
+      
     },
     mode: 'TEST',
-    trans_type: 'SALE',
+    // trans_type: 'SALE',
     version: 1
 
   };
@@ -96,6 +96,7 @@ BluepayClient.prototype._seal = function(form) {
 function CardSinglePayment(options) {
   return new BluepayClient(extend({
     payment_type: 'CREDIT',
+    trans_type: 'SALE',
     _fields: {
       card_cvv2: REQUIRED,
       card_expire: REQUIRED
@@ -103,9 +104,10 @@ function CardSinglePayment(options) {
   }, options));
 }
 
-function CardRecurringPayment(options) {
+function BluepayRecurringPayment(options) {
   return new BluepayClient(extend({
     payment_type: 'CREDIT',
+    trans_type: 'SALE',
     _fields: {
       card_cvv2: REQUIRED,
       card_expire: REQUIRED,
@@ -118,6 +120,31 @@ function CardRecurringPayment(options) {
     }
   }, options));
 }
+
+function RecurringPayment(options) {
+  return new BluepayClient(extend({
+    payment_type: 'CREDIT',
+    f_rebilling: '1',
+    trans_type: 'AUTH',
+    _fields: {
+      card_cvv2: REQUIRED,
+      card_expire: REQUIRED,
+    }
+  }, options));
+}
+
+function Rebill(options){
+  return new BluepayClient(extend({
+    payment_type: 'CREDIT',
+    f_rebilling: '1',
+    trans_type: 'SALE',
+    _fields: {
+      master_id: REQUIRED,
+    }
+  }, options));
+
+}
+
 
 function CardRefund(options) {
   return new BluepayClient(extend({
@@ -146,8 +173,9 @@ function ACHPayment(options) {
 exports.ACHPayment = ACHPayment;
 exports.CardSinglePayment = CardSinglePayment;
 exports.CardRefund = CardRefund;
-exports.CardRecurringPayment = CardRecurringPayment;
-
+exports.BluepayRecurringPayment = BluepayRecurringPayment;
+exports.RecurringPayment =RecurringPayment;
+exports.Rebill =Rebill;
 
 
 var BLUEPAY_MESSAGES = {
