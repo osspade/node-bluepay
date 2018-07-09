@@ -19,6 +19,7 @@ function BluepayClient(options) {
       payment_type: REQUIRED,
       secret_key: REQUIRED,
       payment_account: REQUIRED,
+      mode: REQUIRED,
 
       f_rebilling: OPTIONAL,
       reb_is_credit: OPTIONAL,
@@ -43,7 +44,7 @@ function BluepayClient(options) {
       country: OPTIONAL, // ISO 3166
       
     },
-    mode: 'TEST',
+   
     // trans_type: 'SALE',
     version: 1
 
